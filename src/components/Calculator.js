@@ -6,9 +6,10 @@ class Calculator extends Component {
     super(props);
     this.state = {
       inverters: inverterData,
-      amps: '',
-      volts: '',
-      item: ''
+      ampsInput: '',
+      voltsInput: '',
+      itemInput: '',
+      watts: ''
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -16,17 +17,19 @@ class Calculator extends Component {
   }
 
   handleInputChange(event) {
-    const target = event.target;
-    const value = target.value;
-    const name = target.name;
     this.setState({
-      [name]: value
+      [event.target.name]: event.target.value
     });
   }
 
   handleSubmit(event) {
-    console.log("submit!");
     event.preventDefault();
+    let item = this.state.itemInput;
+    let amps = this.state.ampsInput;
+    let volts = this.state.voltsInput;
+
+    this.setState({ watts: amps * volts })
+    
   }
 
   render() {
@@ -36,9 +39,9 @@ class Calculator extends Component {
         <p>Please add the following information about the items you need to power:</p>
         <div className="input-inverter-info">
           <form onSubmit={this.handleSubmit}>
-            Item:<input type="text" id="item" value={this.state.item} onChange={this.handleInputChange} className="inputs"/>
-            Amps:<input type="text" id="amps" value={this.state.amps} onChange={this.handleInputChange} className="inputs"/>
-            Volts:<input type="text" id="volts" value={this.state.volts} onChange={this.handleInputChange} className="inputs"/>
+            Item:<input type="text" id="item" name="itemInput" value={this.state.item} onChange={this.handleInputChange} className="inputs"/>
+            Amps:<input type="text" id="amps" name="ampsInput" value={this.state.amps} onChange={this.handleInputChange} className="inputs"/>
+            Volts:<input type="text" id="volts" name="voltsInput" value={this.state.volts} onChange={this.handleInputChange} className="inputs"/>
             <input type="submit" value="Add Appliance" />
           </form>
 
@@ -49,9 +52,6 @@ class Calculator extends Component {
                 <th>Amps</th>
                 <th>Volts</th>
                 <th>Watts</th>
-              </tr>
-              <tr>
-                <td>{this.state.value}</td>
               </tr>
             </tbody>
           </table>
